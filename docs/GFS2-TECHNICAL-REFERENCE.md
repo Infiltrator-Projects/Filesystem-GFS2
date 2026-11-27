@@ -56,7 +56,7 @@ The independent provider uses Common V2: https://github.com/Infiltrator-Projects
 
 ## References and implementation boundary
 
-Pinned structures: https://github.com/torvalds/linux/blob/v6.12/include/uapi/linux/gfs2_ondisk.h . Algorithms: https://github.com/torvalds/linux/tree/v6.12/fs/gfs2 (rgrp.c, bmap.c, dir.c, glock.c, recovery.c, log.c). Cluster locking notes: https://docs.kernel.org/filesystems/gfs2-glocks.html . User tools: https://pagure.io/gfs2-utils . The exact journal checksum/tag handling, legacy format compatibility, filename hash and distributed recovery protocols require additional focused specification and fixture validation. The original provider-status documents are retained as historical appendices. No operational provider or current release qualification is asserted by this manual.
+Pinned structures: https://github.com/torvalds/linux/blob/v6.12/include/uapi/linux/gfs2_ondisk.h . Algorithms: https://github.com/torvalds/linux/tree/v6.12/fs/gfs2 (rgrp.c, bmap.c, dir.c, glock.c, recovery.c, log.c). Cluster locking notes: https://docs.kernel.org/filesystems/gfs2-glocks.html . User tools: https://pagure.io/gfs2-utils . The exact journal checksum/tag handling, legacy format compatibility, filename hash and distributed recovery protocols require additional focused specification and fixture validation. Historical provider status is identified in Implementation and qualification boundary. No operational provider or current release qualification is asserted by this manual.
 
 The retained mount code validates the big-endian metadata header and format before traversing the master directory and journal index.
 

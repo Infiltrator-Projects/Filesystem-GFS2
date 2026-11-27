@@ -344,7 +344,7 @@ endobj
 << /Type /Page /Parent 2 0 R /MediaBox [0 0 595 842] /Resources << /Font << /F1 3 0 R /F2 4 0 R /F3 5 0 R >> >> /Contents 35 0 R >>
 endobj
 35 0 obj
-<< /Length 2097 >>
+<< /Length 2204 >>
 stream
 0.06 0.15 0.23 rg 0 768 595 74 re f
 1 1 1 rg BT /F2 10 Tf 43 811 Td (INFILTRATOR / FILESYSTEM ENGINEERING) Tj ET
@@ -352,19 +352,21 @@ BT /F2 22 Tf 43 784 Td (GFS2 - technical reference) Tj ET
 0.08 0.14 0.20 rg BT /F2 15 Tf 43 736 Td (14. References and implementation boundary) Tj ET
 0.08 0.14 0.20 rg BT /F3 10 Tf 43 706 Td (Pinned structures:) Tj ET
 0.08 0.14 0.20 rg BT /F3 10 Tf 43 692 Td (https://github.com/torvalds/linux/blob/v6.12/include/uapi/linux/gfs2_ondisk.h .) Tj ET
-0.08 0.14 0.20 rg BT /F3 10 Tf 43 678 Td (Algorithms: https://github.com/torvalds/linux/tree/v6.12/fs/gfs2 \(rgrp.c, bmap.c,) Tj ET
-0.08 0.14 0.20 rg BT /F3 10 Tf 43 664 Td (dir.c, glock.c, recovery.c, log.c\). Cluster locking notes:) Tj ET
+0.08 0.14 0.20 rg BT /F3 10 Tf 43 678 Td (Algorithms: https://github.com/torvalds/linux/tree/v6.12/fs/gfs2 \(rgrp.c,) Tj ET
+0.08 0.14 0.20 rg BT /F3 10 Tf 43 664 Td (bmap.c, dir.c, glock.c, recovery.c, log.c\). Cluster locking notes:) Tj ET
 0.08 0.14 0.20 rg BT /F3 10 Tf 43 650 Td (https://docs.kernel.org/filesystems/gfs2-glocks.html . User tools:) Tj ET
 0.08 0.14 0.20 rg BT /F3 10 Tf 43 636 Td (https://pagure.io/gfs2-utils . The exact journal checksum/tag handling, legacy) Tj ET
 0.08 0.14 0.20 rg BT /F3 10 Tf 43 622 Td (format compatibility, filename hash and distributed recovery protocols require) Tj ET
-0.08 0.14 0.20 rg BT /F3 10 Tf 43 608 Td (additional focused specification and fixture validation. The original) Tj ET
-0.08 0.14 0.20 rg BT /F3 10 Tf 43 594 Td (provider-status documents are retained as historical appendices. No operational) Tj ET
-0.08 0.14 0.20 rg BT /F3 10 Tf 43 580 Td (provider or current release qualification is asserted by this manual.) Tj ET
-0.08 0.14 0.20 rg BT /F3 10 Tf 43 556 Td (The retained mount code validates the big-endian metadata header and format before) Tj ET
-0.08 0.14 0.20 rg BT /F3 10 Tf 43 542 Td (traversing the master directory and journal index.) Tj ET
-0.08 0.14 0.20 rg BT /F3 10 Tf 43 518 Td (Retained source:) Tj ET
-0.08 0.14 0.20 rg BT /F3 10 Tf 43 504 Td (https://github.com/Infiltrator-Projects/Filesystems/blob/101026021d9088d80b7f0f472d) Tj ET
-0.08 0.14 0.20 rg BT /F3 10 Tf 43 490 Td (9061f0e2c688a3/native/filesystems/gfs2/linux/ops_fstype.c \(blob 4c6d1f15a6\).) Tj ET
+0.08 0.14 0.20 rg BT /F3 10 Tf 43 608 Td (additional focused specification and fixture validation. Historical provider) Tj ET
+0.08 0.14 0.20 rg BT /F3 10 Tf 43 594 Td (status is identified in Implementation and qualification boundary. No) Tj ET
+0.08 0.14 0.20 rg BT /F3 10 Tf 43 580 Td (operational provider or current release qualification is asserted by this) Tj ET
+0.08 0.14 0.20 rg BT /F3 10 Tf 43 566 Td (manual.) Tj ET
+0.08 0.14 0.20 rg BT /F3 10 Tf 43 542 Td (The retained mount code validates the big-endian metadata header and format) Tj ET
+0.08 0.14 0.20 rg BT /F3 10 Tf 43 528 Td (before traversing the master directory and journal index.) Tj ET
+0.08 0.14 0.20 rg BT /F3 10 Tf 43 504 Td (Retained source:) Tj ET
+0.08 0.14 0.20 rg BT /F3 10 Tf 43 490 Td (https://github.com/Infiltrator-Projects/Filesystems/blob/101026021d9088d80b7f0f) Tj ET
+0.08 0.14 0.20 rg BT /F3 10 Tf 43 476 Td (472d9061f0e2c688a3/native/filesystems/gfs2/linux/ops_fstype.c \(blob) Tj ET
+0.08 0.14 0.20 rg BT /F3 10 Tf 43 462 Td (4c6d1f15a6\).) Tj ET
 0.2 0.3 0.4 rg BT /F1 9 Tf 43 32 Td (Historical development and engineering reference | 15) Tj ET
 endstream
 endobj
@@ -409,5 +411,5 @@ xref
 trailer
 << /Size 36 /Root 1 0 R >>
 startxref
-27955
+28062
 %%EOF
