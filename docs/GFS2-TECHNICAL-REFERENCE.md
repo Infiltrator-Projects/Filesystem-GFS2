@@ -40,6 +40,8 @@ EA records begin with a 16-byte header: record length 0, value length 4, name le
 
 Each journal is a circular file, independent of the physical placement of other journals. Log header has common metadata header, 64-bit sequence at 24, flags 32, tail 36, logical journal block number 40, hash 44; later header adds CRC32C at 48, nanosecond time 52 and further identity and local-accounting fields. Log descriptors have type at 24, chunk length 28, descriptor-specific counts 32/36, reserved through 71. Types 300,301,302 describe metadata, revokes and journalled data. Validate complete committed log intervals and descriptor target addresses; process revokes to prevent replay of stale images. Replay only under appropriate journal ownership, fencing and recovery locks. A clean unmount flag is useful evidence but not a substitute for metadata validation.
 
+Shared-disk mutation requires fencing, distributed lock ownership and per-node journal recovery, not just a clean standalone image. Independently test concurrent nodes, loss of lock ownership and journal recovery.
+
 ## Allocation and consistency
 
 Allocate from the correct resource group under its allocation lock, update two-bit state and counters, and journal the bitmap and owner metadata as one transaction. Distinguish a live dinode from an unlinked dinode awaiting reclaim. A block can be reclaimed only when references and the native locking/recovery lifecycle allow it. Structural checking reconstructs root and master namespace ownership, indirect blocks, EA blocks, journal/control files and group metadata, then reconciles resource maps. Formal inode generations and physical inode addresses must remain coherent. For offline repair, obtain exclusive stable access and do not apply an online cluster's cached view to a changed disk.
@@ -48,8 +50,14 @@ Allocate from the correct resource group under its allocation lock, update two-b
 
 Defragmentation can consolidate physical pointer runs without changing file identity or contents. A plan must derive actual ownership, reserve destination blocks, copy and validate payload, publish the new pointers under journal protection and retire old ownership after durable commit. Cluster mode additionally requires native glock ordering and cache coherency; offline exclusive mode still needs journal recovery and all metadata invariants. Test two-bit bitmap boundaries, stuffed-to-unstuffed transition, indirect depth growth, leaf aliasing and overflow, dirty multiple journals, revoke conflicts and orphaned dinodes. Independent mkfs.gfs2, fsck.gfs2 and gfs2_edit images establish interoperability; exact cluster-lock and fencing failure testing remains necessary before concurrent write claims.
 
+## Implementation and qualification boundary
+
+The independent provider uses Common V2: https://github.com/Infiltrator-Projects/Libraries/blob/main/docs/FILESYSTEM_COMMON_ABI_V2.md . Negotiate actual operation masks and media profiles. Distinguish unsupported, corrupt, I/O and stale-handle results. Require bounded host I/O, exclusive unmounted ownership and durable flush before mutation. Test Media and Defragmenter consume the same engine, not separate format parsers. Hosted and freestanding binaries, relocation, recovery, BOOT, kernel integration and packages require separate exact-source evidence. Current support belongs to the repository README and qualification records. The intended package paths are /System/Filesystems/ and /System/Resources/Documentation/; the reference is not an installation or release-status claim.
+
 ## References and implementation boundary
 
 Pinned structures: https://github.com/torvalds/linux/blob/v6.12/include/uapi/linux/gfs2_ondisk.h . Algorithms: https://github.com/torvalds/linux/tree/v6.12/fs/gfs2 (rgrp.c, bmap.c, dir.c, glock.c, recovery.c, log.c). Cluster locking notes: https://docs.kernel.org/filesystems/gfs2-glocks.html . User tools: https://pagure.io/gfs2-utils . The exact journal checksum/tag handling, legacy format compatibility, filename hash and distributed recovery protocols require additional focused specification and fixture validation. The original provider-status documents are retained as historical appendices. No operational provider or current release qualification is asserted by this manual.
 
-The PDF preserves both earlier documents as historical appendices.
+The retained mount code validates the big-endian metadata header and format before traversing the master directory and journal index.
+
+Retained source: https://github.com/Infiltrator-Projects/Filesystems/blob/101026021d9088d80b7f0f472d9061f0e2c688a3/native/filesystems/gfs2/linux/ops_fstype.c (blob 4c6d1f15a6).

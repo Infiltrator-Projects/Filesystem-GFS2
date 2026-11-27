@@ -26,7 +26,7 @@ Independent clean single-node images, resource-group corruption and contradictor
 
 ## 7. Technical references and provenance
 
-- [Technical reference (PDF)](docs/GFS2.pdf) — original-format technical reference with historical appendices and [PDF stream source](docs/GFS2.pdfstreams); not an operational manual.
+- [Technical reference (PDF)](docs/GFS2.pdf) — original-format technical reference as one integrated manual and [PDF stream source](docs/GFS2.pdfstreams); not an operational manual.
 
 - [Pinned central source baseline](https://github.com/Infiltrator-Projects/Filesystems/tree/101026021d9088d80b7f0f472d9061f0e2c688a3/native/filesystems/gfs2)
 - [Native design](native/filesystems/gfs2/DESIGN.md)
