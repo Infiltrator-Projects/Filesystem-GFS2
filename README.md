@@ -1,44 +1,30 @@
 # Filesystem-GFS2
 
-## 1. Purpose and format scope
+Independent native Global File System 2 provider using only Common V2 and partition-relative host I/O. This is a bounded offline reader, not a clustered filesystem writer.
 
-Global File System 2, a shared-disk clustered filesystem. This repository is the designated independent implementation home for InfiltratorOS. **Documentation and migration scaffold only: no independent runtime provider or release is present.**
+## Supported media and operations
 
-## 2. On-disk architecture and invariants
+- GFS2 filesystem format 1802 and multihost format 1900; 512–4096-byte filesystem blocks.
+- Recognition validates superblock geometry, lock protocol and master/root dinode identities.
+- Read-only mount requires a stable, exclusively held host, lock_nolock, one clean journal, and the supported resource-group and namespace layouts.
+- Native rindex and resource bitmaps establish measured free space and allocation states. Directory and file lookup validate actual inode identities, directory hashes and metadata boundaries.
+- Stuffed directories, stuffed files, ordinary direct/indirect data pointers and sparse file reads; CORE probe/mount/stat/list/read and VOLUME query.
+- Extended-hash directory traversal, unqualified journalled data layouts, multiple journals, dirty journal recovery, clustered mount, mutation, formatting, repair, allocation maps, defragmentation and physical BOOT/kernel integration are not supported. Unsupported callbacks are absent or reject the media profile.
 
-Superblock, resource groups, inodes, directory hashes, journals and cluster lock identities govern shared metadata. A local exclusive host flag does not establish distributed ownership; journal and locking state must agree. These are design requirements for the native implementation, not claims about code already present in this repository.
+## Build and release
 
-## 3. Common V2 implementation and capabilities
+`make check` uses the pinned Common V2 header. The release workflow requires the actual qualification job, including independent mkfs.gfs2 media, populated byte fixtures, malformed-media tests, and sanitizer runs, before publishing the native RUN and portable DEB. The formatter is an independent test oracle only; it is not invoked by the provider.
 
-No local Common V2 implementation or advertised operation set has yet been qualified. The target entry point is `infiltrator_filesystem_api_v2`, using bounded, partition-relative host I/O. Implement native probe first, then mount, stat, enumeration, read and volume query where applicable. Consumers must negotiate supported groups and profiles; an unsupported operation must not report success or delegate to a private driver.
+The source-downloading installer builds the hosted module and installs `/System/Filesystems/GFS2.so` plus `/System/Resources/Documentation/Filesystem-GFS2.pdf`. The documentation-only v0.0.1 release remains immutable; v0.1.0 is a candidate until published. Import-free development tests do not qualify the module for actual UEFI execution. Independent populated-media payload interoperability remains an open qualification item.
 
-## 4. Integrity, mutation, allocation and recovery
+## References
 
-Mutation, formatting, check/repair and DEFRAG map/plan/execute/verify/recover require format-specific allocation and ordering invariants, exclusive writable host access and demonstrated interruption recovery. Until qualified, reject them before writing. Preserve native disk semantics and do not add a kernel or FUSE fallback as an alternative filesystem authority.
-
-## 5. Build, installation and release
-
-The target installation is `/System/Filesystems/GFS2.so` and `/System/Resources/Documentation/Filesystem-GFS2.pdf`. Neither file is currently distributed by this repository. Once the implementation qualifies, the intended release is a portable amd64 DEB and CPU-native source-first RUN, with GitHub's automatic source archive. No install or build command is advertised before an executable build exists.
-
-## 6. Qualification and limitations
-
-Independent clean single-node images, resource-group corruption and contradictory journal/lock state. Clustered mutation requires separately proven distributed locking and recovery. Compare independent payloads and unchanged-image hashes; inject truncation, corruption and I/O faults. Establish exact-revision ABI, hosted and import-free freestanding qualification, then independently test BOOT and kernel integration. No local build, runtime or packaging qualification is claimed.
-
-## 7. Technical references and provenance
-
-- [Technical reference (PDF)](docs/GFS2.pdf) — original-format technical reference as one integrated manual and [PDF stream source](docs/GFS2.pdfstreams); not an operational manual.
-
-- [Pinned central source baseline](https://github.com/Infiltrator-Projects/Filesystems/tree/101026021d9088d80b7f0f472d9061f0e2c688a3/native/filesystems/gfs2)
-- [Native design](native/filesystems/gfs2/DESIGN.md)
-- [Migration and qualification plan](MIGRATION_STATUS.md)
-- [Original-format reference source](docs/GFS2.pdfstreams) and [PDF](docs/GFS2.pdf)
+- [Technical reference PDF](docs/GFS2.pdf)
+- [Technical reference source](docs/GFS2-TECHNICAL-REFERENCE.md)
+- [Qualification and migration](MIGRATION_STATUS.md)
+- [Original native design](native/filesystems/gfs2/DESIGN.md)
+- [Pinned central format source](https://github.com/Infiltrator-Projects/Filesystems/tree/101026021d9088d80b7f0f472d9061f0e2c688a3/native/filesystems/gfs2)
+- [Common V2 ABI](https://github.com/Infiltrator-Projects/Libraries)
 - [Project philosophy](docs/PHILOSOPHY.md)
-- [Common ABI](https://github.com/Infiltrator-Projects/Libraries)
 
-Preserve inherited notices and licences on source extraction; new project-authored code uses GPL-3.0-or-later. The [technical reference](docs/GFS2-TECHNICAL-REFERENCE.md) expands original-format research. The PDF preserves both older documents as historical appendices; installation remains pending. Central code or test results are not evidence of an independent provider.
-
-## Native recognition development
-
-A Common V2 recognition implementation now exists in `native/filesystems/gfs2/gfs2.c`. It checks actual superblock and root/master dinode metadata. Only CORE PROBE is advertised; mount, namespace, allocation, journals and mutation remain outstanding. Hosted and import-free development builds and independent-image tests are defined in CI; no test success is asserted until exact-revision CI completes. The published release remains PDF-only.
-
-The subsequent development reader adds CORE mount/stat/list/read and VOLUME query for a strictly bounded offline single-journal profile. Capability advertisement is conditional on the media profile; unsupported cases refuse rather than falling back. This development build is not the published documentation-only package, and exact-revision testing remains required.
+New implementation code is GPL-3.0-or-later. Historical source and evidence retain their original notices and licensing.

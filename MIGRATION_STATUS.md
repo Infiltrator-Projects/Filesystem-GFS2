@@ -1,21 +1,15 @@
-# GFS2 Common V2 migration status
+# GFS2 Common V2 migration
 
-## Source and ownership
+The independent engine implements the restricted offline read-only subset described in [README.md](README.md). The original design and pinned central Linux v6.12.107 source remain reference material, not production backends.
 
-[Exact central source baseline](https://github.com/Infiltrator-Projects/Filesystems/tree/101026021d9088d80b7f0f472d9061f0e2c688a3/native/filesystems/gfs2). Editable Linux v6.12.107-derived source remains centrally. Shared-disk mutation requires cluster locking and recovery proof. Extract and adapt the existing implementation; preserve original licensing, attribution and provenance. New project-authored code uses GPL-3.0-or-later. No source transferred by this documentation commit.
+## Executed development evidence
 
-## Qualification plan
+- [Initial recognition](https://github.com/Infiltrator-Projects/Filesystem-GFS2/actions/runs/46112970882): hosted, import-free, independent formatted-image and sanitizer tests passed.
+- [Offline mount and root namespace](https://github.com/Infiltrator-Projects/Filesystem-GFS2/actions/runs/46113206664): exact-source hosted/import-free tests, independent clean image mount, root enumeration, unchanged media hash and sanitizer tests passed.
+- [Populated namespace and corruption fixture](https://github.com/Infiltrator-Projects/Filesystem-GFS2/actions/runs/46113277248): exact-revision test workflow; verify its final conclusion before claiming its success.
 
-1. Enumerate supported on-disk variants, validate geometry and features; implement bounded CORE probe.
-2. Provide CORE mount/stat/list/read and VOLUME query using native superblock, resource groups, inodes, directory hashes, journals and cluster lock identities.
-3. Test independent clean single-node images, resource-group corruption and journal/lock contradictions; compare independent payloads and unchanged-image hashes; inject malformed media and I/O faults.
-4. Implement mutation, format, check/repair and DEFRAG map/plan/execute/verify/recover only with proven allocation, durability and interruption/recovery semantics. Unsupported operations must refuse before writing.
-5. Qualify exact packaged Common V2 ABI, hosted and import-free freestanding profiles, then actual BOOT and kernel integration independently.
+## Remaining engineering
 
-Native recognition development now implements the Common V2 CORE PROBE for format 1802 / multihost 1900. It validates bounded big-endian superblock geometry, supported lock protocol, and independent master/root dinode identities and types. Constructed corruption fixtures and independent formatter-image tests are implemented; exact revision CI must pass before any test claim. The freestanding build has no runtime imports; this is not BOOT qualification. No mount, namespace reads, allocation, journal cleanliness, mutation or defragmentation is advertised. The published installer remains documentation-only until a qualified operational provider exists.
+Independent populated-media payload comparison, extended-hash and overflow directory traversal, full allocation ownership reconciliation, multiple journal recognition and correct recovery, distributed locking and fencing, native mutation, format, check/repair, defragmentation and interruption recovery, BOOT and kernel integration. Do not advertise these operations before their implementation and qualification.
 
-The [design and qualification reference](docs/GFS2.pdf) is available. It is not an operational manual; release and installation qualification remain pending.
-
-## Offline namespace development
-
-A bounded single-journal lock_nolock reader is now implemented for stable exclusively held read-only media, with native resource index, bitmap-derived free capacity, journal header validation, stuffed directories and regular file pointer trees. It refuses dirty/unsupported journals, clustered mounts, extended-hash directory access and unqualified data variants. This is development source, not a published runtime or comprehensive qualification. Tests must establish the exact revision and independent payload interoperability remains outstanding.
+Publication of the bounded read-only runtime is gated by the actual development and package qualification workflow. It does not establish any of the outstanding capabilities.
