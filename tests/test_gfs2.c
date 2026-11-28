@@ -1,6 +1,7 @@
 /* SPDX-License-Identifier: GPL-3.0-or-later */
 #define _POSIX_C_SOURCE 200809L
 #include <infiltratr/filesystem_module_v2.h>
+#include "../Libraries/tests/filesystem_reader_lifetime.h"
 #include <assert.h>
 #include <dlfcn.h>
 #include <fcntl.h>
@@ -229,6 +230,7 @@ static void read_tests(const IfsFsCoreOpsV2 *core,
     void *volume = NULL;
     IfsFsVolumeInfoV2 info = {.structure_bytes=sizeof(info)};
     host->capabilities |= IFS_FS_HOST_EXCLUSIVE;
+    check_reader_lifetime(core, host);
     assert(core->mount(host,&volume,&info)==0 && volume);
     unsigned count = ((SIZE / B - FIRST) / 4) * 4;
     assert(info.free_bytes == (uint64_t)(count - (DATA+3-FIRST))*B);

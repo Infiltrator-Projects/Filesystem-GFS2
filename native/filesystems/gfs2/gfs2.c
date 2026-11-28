@@ -110,6 +110,7 @@ static int probe(const IfsFsHostRuntimeV2 *host, uint32_t *variant)
     *variant = FS_FORMAT;
     return IFS_FS_OK;
 }
+#include <infiltratr/filesystem_session_v2.h>
 #include "reader.h"
 
 static const IfsFsCoreOpsV2 core = {
@@ -117,7 +118,7 @@ static const IfsFsCoreOpsV2 core = {
                IFS_FS_GROUP_CORE, 0, IFS_FS_CORE_PROBE | IFS_FS_CORE_MOUNT |
                IFS_FS_CORE_STAT | IFS_FS_CORE_LIST | IFS_FS_CORE_READ},
     .probe = probe, .mount = mount_volume, .unmount = unmount_volume,
-    .stat = stat_path, .directory_entry = directory_entry, .read = read_path
+    .stat = mounted_stat, .directory_entry = mounted_directory_entry, .read = mounted_read
 };
 static const IfsFsGroupHeaderV2 *query(uint32_t id, uint32_t min, uint32_t max)
 {
