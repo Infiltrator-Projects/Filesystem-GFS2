@@ -3,12 +3,13 @@ CC ?= cc
 CFLAGS ?= -O2
 BASE = -std=c11 -Wall -Wextra -Werror -I Libraries/include
 SRC = native/filesystems/gfs2/gfs2.c
+HDR = native/filesystems/gfs2/reader.h
 .PHONY: all check clean
 all: build/GFS2.so build/freestanding/GFS2.so
-build/GFS2.so: $(SRC) Makefile
+build/GFS2.so: $(SRC) $(HDR) Makefile
 	mkdir -p build
 	$(CC) $(BASE) $(CFLAGS) -fPIC -fvisibility=hidden -shared -Wl,-z,defs -o $@ $(SRC)
-build/freestanding/GFS2.so: $(SRC) Makefile
+build/freestanding/GFS2.so: $(SRC) $(HDR) Makefile
 	mkdir -p build/freestanding
 	$(CC) $(BASE) -O2 -march=x86-64 -DIFS_GFS2_FREESTANDING -ffreestanding -fno-builtin -fno-stack-protector -fno-tree-loop-distribute-patterns -fPIC -fvisibility=hidden -shared -nostdlib -Wl,-z,defs,-Bsymbolic -o $@ $(SRC)
 build/test_gfs2: tests/test_gfs2.c Makefile

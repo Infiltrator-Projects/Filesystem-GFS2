@@ -110,15 +110,20 @@ static int probe(const IfsFsHostRuntimeV2 *host, uint32_t *variant)
     *variant = FS_FORMAT;
     return IFS_FS_OK;
 }
+#include "reader.h"
+
 static const IfsFsCoreOpsV2 core = {
     .header = {IFS_FS_GROUP_ABI_V2, sizeof(IfsFsCoreOpsV2),
-               IFS_FS_GROUP_CORE, 0, IFS_FS_CORE_PROBE},
-    .probe = probe
+               IFS_FS_GROUP_CORE, 0, IFS_FS_CORE_PROBE | IFS_FS_CORE_MOUNT |
+               IFS_FS_CORE_STAT | IFS_FS_CORE_LIST | IFS_FS_CORE_READ},
+    .probe = probe, .mount = mount_volume, .unmount = unmount_volume,
+    .stat = stat_path, .directory_entry = directory_entry, .read = read_path
 };
 static const IfsFsGroupHeaderV2 *query(uint32_t id, uint32_t min, uint32_t max)
 {
-    return id == IFS_FS_GROUP_CORE && min <= IFS_FS_GROUP_ABI_V2 &&
-           max >= IFS_FS_GROUP_ABI_V2 ? &core.header : NULL;
+    if (min > IFS_FS_GROUP_ABI_V2 || max < IFS_FS_GROUP_ABI_V2) return NULL;
+    if (id == IFS_FS_GROUP_CORE) return &core.header;
+    return id == IFS_FS_GROUP_VOLUME ? &volume_ops.header : NULL;
 }
 static const IfsFsModuleApiV2 api = {
     .abi_version = IFS_FS_COMMON_ABI_V2,
@@ -129,7 +134,7 @@ static const IfsFsModuleApiV2 api = {
 #else
     .runtime_profiles = IFS_FS_PROFILE_HOSTED,
 #endif
-    .group_mask = IFS_FS_GROUP_BIT(IFS_FS_GROUP_CORE),
+    .group_mask = IFS_FS_GROUP_BIT(IFS_FS_GROUP_CORE) | IFS_FS_GROUP_BIT(IFS_FS_GROUP_VOLUME),
     .query_group = query
 };
 __attribute__((visibility("default")))

@@ -15,3 +15,7 @@
 Native recognition development now implements the Common V2 CORE PROBE for format 1802 / multihost 1900. It validates bounded big-endian superblock geometry, supported lock protocol, and independent master/root dinode identities and types. Constructed corruption fixtures and independent formatter-image tests are implemented; exact revision CI must pass before any test claim. The freestanding build has no runtime imports; this is not BOOT qualification. No mount, namespace reads, allocation, journal cleanliness, mutation or defragmentation is advertised. The published installer remains documentation-only until a qualified operational provider exists.
 
 The [design and qualification reference](docs/GFS2.pdf) is available. It is not an operational manual; release and installation qualification remain pending.
+
+## Offline namespace development
+
+A bounded single-journal lock_nolock reader is now implemented for stable exclusively held read-only media, with native resource index, bitmap-derived free capacity, journal header validation, stuffed directories and regular file pointer trees. It refuses dirty/unsupported journals, clustered mounts, extended-hash directory access and unqualified data variants. This is development source, not a published runtime or comprehensive qualification. Tests must establish the exact revision and independent payload interoperability remains outstanding.

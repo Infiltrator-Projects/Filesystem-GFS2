@@ -40,3 +40,5 @@ Preserve inherited notices and licences on source extraction; new project-author
 ## Native recognition development
 
 A Common V2 recognition implementation now exists in `native/filesystems/gfs2/gfs2.c`. It checks actual superblock and root/master dinode metadata. Only CORE PROBE is advertised; mount, namespace, allocation, journals and mutation remain outstanding. Hosted and import-free development builds and independent-image tests are defined in CI; no test success is asserted until exact-revision CI completes. The published release remains PDF-only.
+
+The subsequent development reader adds CORE mount/stat/list/read and VOLUME query for a strictly bounded offline single-journal profile. Capability advertisement is conditional on the media profile; unsupported cases refuse rather than falling back. This development build is not the published documentation-only package, and exact-revision testing remains required.

@@ -93,9 +93,10 @@ int main(int argc, char **argv)
     assert(ifs_fs_api_v2_valid(api, "gfs2"));
     const IfsFsCoreOpsV2 *core =
         (const IfsFsCoreOpsV2 *)ifs_fs_group_v2(api, IFS_FS_GROUP_CORE);
-    assert(core && core->header.capabilities == IFS_FS_CORE_PROBE);
-    assert(!core->mount && !core->read && !core->write &&
-           !ifs_fs_group_v2(api, IFS_FS_GROUP_VOLUME) &&
+    assert(core && core->header.capabilities == (IFS_FS_CORE_PROBE | IFS_FS_CORE_MOUNT |
+           IFS_FS_CORE_STAT | IFS_FS_CORE_LIST | IFS_FS_CORE_READ));
+    assert(core->mount && core->read && !core->write &&
+           ifs_fs_group_v2(api, IFS_FS_GROUP_VOLUME) &&
            !ifs_fs_group_v2(api, IFS_FS_GROUP_DEFRAG));
     struct context c = {.fd = -1, .size = SIZE};
     IfsFsHostRuntimeV2 host = {
@@ -114,6 +115,20 @@ int main(int argc, char **argv)
         host.logical_sector_bytes = host.physical_sector_bytes = c.sector;
         if (argc == 3) {
             expect(core, &host, &c, IFS_FS_OK);
+            void *volume = NULL;
+            IfsFsVolumeInfoV2 info = {.structure_bytes = sizeof(info)};
+            assert(core->mount(&host, &volume, &info) == IFS_FS_ACCESS && !volume);
+            host.capabilities |= IFS_FS_HOST_EXCLUSIVE;
+            int rc = core->mount(&host, &volume, &info);
+            if (rc) fprintf(stderr, "mount failed: %d, sector=%u\n", rc, c.sector);
+            assert(rc == 0 && volume && info.block_bytes == 4096u && info.free_bytes > 0);
+            char name[256];
+            IfsFsEntryV2 e = {.structure_bytes = sizeof(e), .name = name, .name_capacity = sizeof(name)};
+            assert(core->stat(volume, "/", &e) == 0 && e.type == IFS_FS_ENTRY_DIRECTORY);
+            assert(core->directory_entry(volume, "/", 0, &e) == IFS_FS_END);
+            assert(core->stat(volume, "/nonexistent", &e) == IFS_FS_NOT_FOUND);
+            assert(core->unmount(volume) == 0 && !c.allocations);
+            host.capabilities &= ~IFS_FS_HOST_EXCLUSIVE;
             continue;
         }
         for (unsigned shift = 9; shift <= 12; ++shift) {
