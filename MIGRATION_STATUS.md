@@ -12,6 +12,6 @@
 4. Implement mutation, format, check/repair and DEFRAG map/plan/execute/verify/recover only with proven allocation, durability and interruption/recovery semantics. Unsupported operations must refuse before writing.
 5. Qualify exact packaged Common V2 ABI, hosted and import-free freestanding profiles, then actual BOOT and kernel integration independently.
 
-All independent stages, PDF manual and packaging are pending. No runtime capability is claimed.
+Native recognition development now implements the Common V2 CORE PROBE for format 1802 / multihost 1900. It validates bounded big-endian superblock geometry, supported lock protocol, and independent master/root dinode identities and types. Constructed corruption fixtures and independent formatter-image tests are implemented; exact revision CI must pass before any test claim. The freestanding build has no runtime imports; this is not BOOT qualification. No mount, namespace reads, allocation, journal cleanliness, mutation or defragmentation is advertised. The published installer remains documentation-only until a qualified operational provider exists.
 
 The [design and qualification reference](docs/GFS2.pdf) is available. It is not an operational manual; release and installation qualification remain pending.

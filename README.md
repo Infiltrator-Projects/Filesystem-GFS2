@@ -36,3 +36,7 @@ Independent clean single-node images, resource-group corruption and contradictor
 - [Common ABI](https://github.com/Infiltrator-Projects/Libraries)
 
 Preserve inherited notices and licences on source extraction; new project-authored code uses GPL-3.0-or-later. The [technical reference](docs/GFS2-TECHNICAL-REFERENCE.md) expands original-format research. The PDF preserves both older documents as historical appendices; installation remains pending. Central code or test results are not evidence of an independent provider.
+
+## Native recognition development
+
+A Common V2 recognition implementation now exists in `native/filesystems/gfs2/gfs2.c`. It checks actual superblock and root/master dinode metadata. Only CORE PROBE is advertised; mount, namespace, allocation, journals and mutation remain outstanding. Hosted and import-free development builds and independent-image tests are defined in CI; no test success is asserted until exact-revision CI completes. The published release remains PDF-only.
